@@ -30,16 +30,16 @@ public class LZF {
                     System.exit(1);
                 }
                 byte[] data = readData(src);
-                System.out.println("Read " + data.length + " bytes.");
-                System.out.println("Original Text Binary: \n" + Utils.formatOctetBinary(Utils.bytesToBinaryString(data)));
+                Debug.debugMessage("Read " + data.length + " bytes.");
+                Debug.debugMessage("Original Text Binary: \n" + Utils.formatOctetBinary(Utils.bytesToBinaryString(data)));
                 byte[] result = null;
                 if (compress) {
                     result = LZFEncoder.encode(data);
-                    System.out.println("Compressed Text Binary: \n" + Utils.formatOctetBinary(Utils.bytesToBinaryString(result)));
+                    Debug.debugMessage("Compressed Text Binary: \n" + Utils.formatOctetBinary(Utils.bytesToBinaryString(result)));
                 } else {
                     result = LZFDecoder.decode(data);
                 }
-                System.out.println("Processed into " + result.length + " bytes.");
+                Debug.debugMessage("Processed into " + result.length + " bytes.");
                 File resultFile = null;
 
                 if (compress) {
@@ -50,7 +50,7 @@ public class LZF {
                 FileOutputStream out = new FileOutputStream(resultFile);
                 out.write(result);
                 out.close();
-                System.out.println("Wrote in file '" + resultFile.getAbsolutePath() + "'.");
+                Debug.debugMessage("Wrote in file '" + resultFile.getAbsolutePath() + "'.");
                 return;
             }
         }
@@ -60,7 +60,7 @@ public class LZF {
 
     private byte[] readData(File in) throws IOException {
         int len = (int) in.length();
-        System.out.println("readDates in.length = " + len);
+        Debug.debugMessage("readDates in.length = " + len);
         byte[] result = new byte[len];
         int offset = 0;
         FileInputStream fis = new FileInputStream(in);
@@ -84,7 +84,7 @@ public class LZF {
     public static void main(String[] args) throws IOException {
         String[] cargs = new String[2];
         cargs[0] = "-c";
-        cargs[1] = "ficheiro.txt";
+        cargs[1] = "data/71kchars.txt";
         new LZF().process(cargs);
         //new LZF().process(args);
     }

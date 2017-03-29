@@ -22,18 +22,18 @@ public class LZFEncoder {
      * a sequence of chunks.
      */
     public static byte[] encode(byte[] data) {
-        System.out.println("encode()" + Utils.bytesToString(data));
+        Debug.debugMessage("encode()" + Utils.bytesToString(data));
         int left = data.length;
-        System.out.println("encode.lenght = " + left);
+        Debug.debugMessage("encode.lenght = " + left);
         ChunkEncoder enc = new ChunkEncoder(left);
         int chunkLen = Math.min(LZFChunk.MAX_CHUNK_LEN, left);
-        System.out.println("chunkLen = " + chunkLen + " ("+ LZFChunk.MAX_CHUNK_LEN + " "+ left+")");
+        Debug.debugMessage("chunkLen = " + chunkLen + " ("+ LZFChunk.MAX_CHUNK_LEN + " "+ left+")");
         LZFChunk first = enc.encodeChunk(data, 0, chunkLen);
-        System.out.println("encodeChunk("+Utils.bytesToBinaryString(data)+", 0, "+chunkLen);
+        Debug.debugMessage("encodeChunk("+Utils.bytesToBinaryString(data)+", 0, "+chunkLen);
         left -= chunkLen;
         // shortcut: if it all fit in, no need to coalesce:
         if (left < 1) {
-            System.out.println("returned left < 1: output:" + Utils.bytesToString(first.getData()));
+            Debug.debugMessage("returned left < 1: output:" + Utils.bytesToString(first.getData()));
             return first.getData();
         }
         // otherwise need to get other chunks:

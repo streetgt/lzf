@@ -67,12 +67,12 @@ public class ChunkEncoder {
     }
 
     private static int calcHashLen(int chunkSize) {
-        System.out.println("calcHashLen("+chunkSize+")");
+        Debug.debugMessage("calcHashLen("+chunkSize+")");
         // in general try get hash table size of 2x input size
         chunkSize += chunkSize;
         // but no larger than max size:
         if (chunkSize >= MAX_HASH_SIZE) {
-            System.out.println("chunkSize > MAX_HASH_SIZE, return 64k");
+            Debug.debugMessage("chunkSize > MAX_HASH_SIZE, return 64k");
             return MAX_HASH_SIZE;
         }
         // otherwise just need to round up to nearest 2x
@@ -80,29 +80,29 @@ public class ChunkEncoder {
         while (hashLen < chunkSize) {
             hashLen += hashLen;
         }
-        System.out.println("calcHashLen returned " + hashLen);
+        Debug.debugMessage("calcHashLen returned " + hashLen);
         return hashLen;
     }
 
     private int first(byte[] in, int inPos) {
-        System.out.println("first("+Utils.bytesToString(in)+","+inPos+")");
+        Debug.debugMessage("first("+Utils.bytesToString(in)+","+inPos+")");
         int ret = (in[inPos] << 8) + (in[inPos + 1] & 255);
-        System.out.println("first() returned " +ret);
+        Debug.debugMessage("first() returned " +ret);
         return ret;
     }
 
     private static int next(int v, byte[] in, int inPos) {
-        System.out.println("next("+v+", "+Utils.bytesToString(in)+", "+inPos+")");
+        Debug.debugMessage("next("+v+", "+Utils.bytesToString(in)+", "+inPos+")");
         int ret = (v << 8) + (in[inPos + 2] & 255);
-        System.out.println("next() returned " + ret);
+        Debug.debugMessage("next() returned " + ret);
         return ret;
     }
 
     private int hash(int h) {
-        System.out.println("hash("+h+")");
+        Debug.debugMessage("hash("+h+")");
         // or 184117; but this seems to give better hashing?
         int ret = ((h * 57321) >> 9) & _hashModulo;
-        System.out.println("hash() returned " + ret);
+        Debug.debugMessage("hash() returned " + ret);
         return ret;
         // original lzf-c.c used this:
         // return (((h ^ (h << 5)) >> (24 - HLOG) - h*5) & _hashModulo;
