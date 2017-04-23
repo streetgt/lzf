@@ -84,7 +84,7 @@ public class LZF {
     public static void main(String[] args) throws IOException {
         String[] cargs = new String[2];
         cargs[0] = "-c";
-        cargs[1] = "data/71kchars.txt";
+        cargs[1] = "data/35chars.txt";
         new LZF().process(cargs);
         //new LZF().process(args);
     }

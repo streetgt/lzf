@@ -37,9 +37,12 @@ public class ChunkEncoder {
      * hash table to use
      */
     public ChunkEncoder(int totalLength) {
+        Debug.debugMessage("largestChunkLen = (" + totalLength + "," + LZFChunk.MAX_CHUNK_LEN + ")");
         int largestChunkLen = Math.max(totalLength, LZFChunk.MAX_CHUNK_LEN);
 
+        
         int hashLen = calcHashLen(largestChunkLen);
+        Debug.debugMessage("hashLen = " + hashLen);
         _hashTable = new int[hashLen];
         _hashModulo = hashLen - 1;
         // Ok, then, what's the worst case output buffer length?
@@ -86,6 +89,7 @@ public class ChunkEncoder {
 
     private int first(byte[] in, int inPos) {
         Debug.debugMessage("first("+Utils.bytesToString(in)+","+inPos+")");
+        Debug.debugMessage("in[inPos]: " + in[inPos]);
         int ret = (in[inPos] << 8) + (in[inPos + 1] & 255);
         Debug.debugMessage("first() returned " +ret);
         return ret;
@@ -94,13 +98,16 @@ public class ChunkEncoder {
     private static int next(int v, byte[] in, int inPos) {
         Debug.debugMessage("next("+v+", "+Utils.bytesToString(in)+", "+inPos+")");
         int ret = (v << 8) + (in[inPos + 2] & 255);
+        Debug.debugMessage("(in[inPos + 2): " + in[inPos + 2]);
         Debug.debugMessage("next() returned " + ret);
         return ret;
     }
 
     private int hash(int h) {
-        Debug.debugMessage("hash("+h+")");
+        Debug.debugMessage("hash( "+ h +" )");
         // or 184117; but this seems to give better hashing?
+        Debug.debugMessage("_hashModulo: " + _hashModulo);
+        Debug.debugMessage("("+ h + " * 57321) " + (h * 57321));
         int ret = ((h * 57321) >> 9) & _hashModulo;
         Debug.debugMessage("hash() returned " + ret);
         return ret;
@@ -110,6 +117,7 @@ public class ChunkEncoder {
     }
 
     private int tryCompress(byte[] in, int inPos, int inEnd, byte[] out, int outPos) {
+        Debug.debugMessage("tryCompress("+Utils.bytesToString(in) + "," + inPos + ","+inEnd + ", ... ," + outPos + ")");
         int literals = 0;
         outPos++;
         int hash = first(in, 0);
@@ -120,6 +128,7 @@ public class ChunkEncoder {
             byte p2 = in[inPos + 2];
             // next
             hash = (hash << 8) + (p2 & 255);
+            Debug.debugMessage("before hash");
             int off = hash(hash);
             int ref = _hashTable[off];
             _hashTable[off] = inPos;
