@@ -40,7 +40,6 @@ public class ChunkEncoder {
         Debug.debugMessage("largestChunkLen = (" + totalLength + "," + LZFChunk.MAX_CHUNK_LEN + ")");
         int largestChunkLen = Math.max(totalLength, LZFChunk.MAX_CHUNK_LEN);
 
-        
         int hashLen = calcHashLen(largestChunkLen);
         Debug.debugMessage("hashLen = " + hashLen);
         _hashTable = new int[hashLen];
@@ -62,15 +61,18 @@ public class ChunkEncoder {
              */
             int compLen = tryCompress(data, offset, offset + len, _encodeBuffer, 0);
             if (compLen < (len - 2)) { // nah; just return uncompressed
+                Debug.debugMessage("Chunk has been compressed.");
+                Debug.debugMessage("compLen (" + compLen + ")" + " < (len(" + len + ")-2)");
                 return LZFChunk.createCompressed(len, _encodeBuffer, 0, compLen);
             }
         }
+        Debug.debugMessage("Chunk was not compressed.");
         // Otherwise leave uncompressed:
         return LZFChunk.createNonCompressed(data, offset, len);
     }
 
     private static int calcHashLen(int chunkSize) {
-        Debug.debugMessage("calcHashLen("+chunkSize+")");
+        Debug.debugMessage("calcHashLen(" + chunkSize + ")");
         // in general try get hash table size of 2x input size
         chunkSize += chunkSize;
         // but no larger than max size:
@@ -88,15 +90,15 @@ public class ChunkEncoder {
     }
 
     private int first(byte[] in, int inPos) {
-        Debug.debugMessage("first("+Utils.bytesToString(in)+","+inPos+")");
+        Debug.debugMessage("first(" + Utils.bytesToString(in) + "," + inPos + ")");
         Debug.debugMessage("in[inPos]: " + in[inPos]);
         int ret = (in[inPos] << 8) + (in[inPos + 1] & 255);
-        Debug.debugMessage("first() returned " +ret);
+        Debug.debugMessage("first() returned " + ret);
         return ret;
     }
 
     private static int next(int v, byte[] in, int inPos) {
-        Debug.debugMessage("next("+v+", "+Utils.bytesToString(in)+", "+inPos+")");
+        Debug.debugMessage("next(" + v + ", " + Utils.bytesToString(in) + ", " + inPos + ")");
         int ret = (v << 8) + (in[inPos + 2] & 255);
         Debug.debugMessage("(in[inPos + 2): " + in[inPos + 2]);
         Debug.debugMessage("next() returned " + ret);
@@ -104,10 +106,10 @@ public class ChunkEncoder {
     }
 
     private int hash(int h) {
-        Debug.debugMessage("hash( "+ h +" )");
+        Debug.debugMessage("hash( " + h + " )");
         // or 184117; but this seems to give better hashing?
         Debug.debugMessage("_hashModulo: " + _hashModulo);
-        Debug.debugMessage("("+ h + " * 57321) " + (h * 57321));
+        Debug.debugMessage("(" + h + " * 57321) " + (h * 57321));
         int ret = ((h * 57321) >> 9) & _hashModulo;
         Debug.debugMessage("hash() returned " + ret);
         return ret;
@@ -117,7 +119,7 @@ public class ChunkEncoder {
     }
 
     private int tryCompress(byte[] in, int inPos, int inEnd, byte[] out, int outPos) {
-        Debug.debugMessage("tryCompress("+Utils.bytesToString(in) + "," + inPos + ","+inEnd + ", ... ," + outPos + ")");
+        Debug.debugMessage("tryCompress(" + Utils.bytesToString(in) + "," + inPos + "," + inEnd + ", ... ," + outPos + ")");
         int literals = 0;
         outPos++;
         int hash = first(in, 0);
@@ -189,6 +191,8 @@ public class ChunkEncoder {
         if (literals == 0) {
             outPos--;
         }
+
+        Debug.debugMessage("outPos: " + outPos);
         return outPos;
     }
 

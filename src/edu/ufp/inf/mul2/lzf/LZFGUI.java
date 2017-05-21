@@ -30,6 +30,7 @@ public class LZFGUI extends javax.swing.JFrame {
     private String filename = null;
     private byte[] lzfCompressResult = null;
     private byte[] lzfDecompressResult = null;
+    protected static int Sleep = 500;
 
     /**
      * Creates new form LZFGUI

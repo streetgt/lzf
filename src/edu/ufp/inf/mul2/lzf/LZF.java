@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Simple command-line utility that can be used for testing LZF compression.
@@ -38,6 +40,7 @@ public class LZF {
                     Debug.debugMessage("Compressed Text Binary: \n" + Utils.formatOctetBinary(Utils.bytesToBinaryString(result)));
                 } else {
                     result = LZFDecoder.decode(data);
+                    Debug.debugMessage("Decompressed Text Binary: \n" + Utils.formatOctetBinary(Utils.bytesToBinaryString(result)));
                 }
                 Debug.debugMessage("Processed into " + result.length + " bytes.");
                 File resultFile = null;
@@ -84,7 +87,7 @@ public class LZF {
     public static void main(String[] args) throws IOException {
         String[] cargs = new String[2];
         cargs[0] = "-c";
-        cargs[1] = "data/35chars.txt";
+        cargs[1] = "data/16chars.txt";
         new LZF().process(cargs);
         //new LZF().process(args);
     }
