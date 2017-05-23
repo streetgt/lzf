@@ -6,13 +6,11 @@ package edu.ufp.inf.mul2.lzf;
  * and open the template in the editor.
  */
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -30,7 +28,7 @@ public class LZFGUI extends javax.swing.JFrame {
     private String filename = null;
     private byte[] lzfCompressResult = null;
     private byte[] lzfDecompressResult = null;
-    protected static int Sleep = 500;
+    private boolean fileCompressed = false;
 
     /**
      * Creates new form LZFGUI
@@ -49,21 +47,41 @@ public class LZFGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnOpenFile = new javax.swing.JButton();
-        btnSaveFile = new javax.swing.JButton();
-        btnCompress = new javax.swing.JButton();
-        btnDecompress = new javax.swing.JButton();
-        btnNext = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         taInput = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         taOutput = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        btnOpenFile = new javax.swing.JButton();
+        btnSaveFile = new javax.swing.JButton();
+        btnCompress = new javax.swing.JButton();
+        btnDecompress = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        radioShowBinary = new javax.swing.JRadioButton();
+        lblOutSize = new javax.swing.JLabel();
+        lblInpSize = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setSize(new java.awt.Dimension(800, 600));
+
+        taInput.setColumns(20);
+        taInput.setRows(5);
+        jScrollPane2.setViewportView(taInput);
+
+        jLabel1.setText("Input:");
+
+        jLabel2.setText("Output:");
+
+        taOutput.setColumns(20);
+        taOutput.setRows(5);
+        jScrollPane1.setViewportView(taOutput);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
         btnOpenFile.setText("Abrir Compressão");
         btnOpenFile.setToolTipText("");
@@ -88,120 +106,187 @@ public class LZFGUI extends javax.swing.JFrame {
         });
 
         btnDecompress.setText("Descomprimir");
+        btnDecompress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDecompressActionPerformed(evt);
+            }
+        });
 
-        btnNext.setText("Próximo");
+        btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
-        taInput.setColumns(20);
-        taInput.setRows(5);
-        jScrollPane2.setViewportView(taInput);
+        radioShowBinary.setText("Mostrar Binario");
 
-        jLabel1.setText("Input:");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator2)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnCompress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOpenFile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSaveFile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(btnDecompress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(radioShowBinary, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(btnReset)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnOpenFile)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSaveFile)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCompress)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDecompress)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioShowBinary)
+                .addGap(18, 18, 18)
+                .addComponent(btnReset)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        jLabel2.setText("Output:");
+        lblOutSize.setText("Size: 0");
 
-        taOutput.setColumns(20);
-        taOutput.setRows(5);
-        jScrollPane1.setViewportView(taOutput);
+        lblInpSize.setText("Size: 0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btnOpenFile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnSaveFile, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addGap(40, 40, 40)
-                            .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(38, 38, 38)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnDecompress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnCompress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblInpSize))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblOutSize)))
+                        .addGap(39, 39, 39)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnOpenFile, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnCompress))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSaveFile)
-                            .addComponent(btnDecompress)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnNext)
-                        .addGap(42, 42, 42)))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblInpSize))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(lblOutSize))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenFileActionPerformed
-        int result = fc.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            this.openedFile = true;
-            File selectedFile = fc.getSelectedFile();
-
-            filename = selectedFile.getAbsolutePath();
-
-            try {
-                FileReader reader = new FileReader(filename);
-                BufferedReader br = new BufferedReader(reader);
-                taInput.read(br, null);
-                br.close();
-                System.out.println(taInput.getText());
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }//GEN-LAST:event_btnOpenFileActionPerformed
-
-    private void btnSaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveFileActionPerformed
-        if(lzfCompressResult == null) {
-            JOptionPane.showMessageDialog(this, "É necessario que já exista alguma string compressa!");
+    private void btnDecompressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecompressActionPerformed
+        if(!this.fileCompressed) {
+            JOptionPane.showMessageDialog(this, "É necessario carregar um ficheiro comprimido.");
             return;
         }
         
-        int result = fc.showSaveDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            
-            File selectedFile = fc.getSelectedFile();
-            filename = selectedFile.getAbsolutePath();
-            
-            try {
-                    File resultFile = new File(filename + SUFFIX);
-                    FileOutputStream out = new FileOutputStream(resultFile);
-                    out.write(LZFDecoder.decode(lzfCompressResult));
-                    out.close();
-                    System.out.println("Wrote in file '" + resultFile.getAbsolutePath() + "'.");
+        if (this.taInput.getText().length() > 0 || this.openedFile == true)
+        {
+            String output = null;
+            byte[] data = null;
+            if (this.openedFile == true) {
+                try {
+                    File src = new File(filename);
+                    if (!src.exists()) {
+                        System.err.println("File '" + filename + "' does not exist.");
+                        System.exit(1);
+                    }
+
+                    data = readData(src);
+                    this.lblInpSize.setText("Size: " + data.length);
+                    System.out.println("Read " + data.length + " bytes.");
+                    lzfDecompressResult = LZFDecoder.decode(data);
+                    System.out.println("Processed into " + lzfDecompressResult.length + " bytes.");
+
+                    // em lzfResult fica o resultado descomprimido
+                    if (this.radioShowBinary.isSelected()) {
+                        output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfDecompressResult));
+                    } else {
+                        output = Utils.bytesToString(lzfDecompressResult);
+                    }
                     
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+                    System.out.println(output);
+
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            } else {
+
+                try {
+                    data = taInput.getText().getBytes();
+                    this.lblInpSize.setText("Size: " + data.length);
+                    System.out.println("Read " + data.length + " bytes.");
+                    lzfDecompressResult = LZFDecoder.decode(data);
+                    System.out.println("Processed into " + lzfDecompressResult.length + " bytes.");
+
+                    if (this.radioShowBinary.isSelected()) {
+                        output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfDecompressResult));
+                        
+                    } else {
+                        output = Utils.bytesToString(lzfDecompressResult);
+                    }
+                    System.out.println(output);
+                } catch (IOException ex) {
+                    Logger.getLogger(LZFGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
+
+            this.lblOutSize.setText("Size: " + output.length());
+            taOutput.setText(output);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Ainda não abriu um ficheiro ou não escreveu nenhuma string de input");
         }
 
-    }//GEN-LAST:event_btnSaveFileActionPerformed
+    }//GEN-LAST:event_btnDecompressActionPerformed
 
     private void btnCompressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompressActionPerformed
 
@@ -216,42 +301,117 @@ public class LZFGUI extends javax.swing.JFrame {
                         System.err.println("File '" + filename + "' does not exist.");
                         System.exit(1);
                     }
-                
+
                     data = readData(src);
+                    this.lblInpSize.setText("Size: " + data.length);
                     System.out.println("Read " + data.length + " bytes.");
                     lzfCompressResult = LZFEncoder.encode(data);
                     System.out.println("Processed into " + lzfCompressResult.length + " bytes.");
-                    
+
                     // em lzfResult fica o resultado comprimido
-                    output = Utils.bytesToBinaryString(lzfCompressResult);
+                    if (this.radioShowBinary.isSelected()) {
+                        output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfCompressResult));
+                    } else {
+                        output = Utils.bytesToString(lzfCompressResult);
+                    }
                     System.out.println(output);
-                    
+
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             } else {
-                
+
                 data = taInput.getText().getBytes();
+                this.lblInpSize.setText("Size: " + data.length);
                 System.out.println("Read " + data.length + " bytes.");
                 lzfCompressResult = LZFEncoder.encode(data);
                 System.out.println("Processed into " + lzfCompressResult.length + " bytes.");
-                    
-                output = Utils.bytesToBinaryString(lzfCompressResult);
+
+                if (this.radioShowBinary.isSelected()) {
+                    output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfCompressResult));
+                } else {
+                    output = Utils.bytesToString(lzfCompressResult);
+                }
+
                 System.out.println(output);
-                  
+
             }
             
-            btnNext.setEnabled(true);
-            btnOpenFile.setEnabled(false);
-            btnCompress.setEnabled(false);
-            btnDecompress.setEnabled(false);
-            System.out.println("Começou");
+            this.lblOutSize.setText("Size: " + output.length());
             taOutput.setText(output);
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Ainda não abriu um ficheiro ou não escreveu nenhuma string de input");
         }
     }//GEN-LAST:event_btnCompressActionPerformed
+
+    private void btnSaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveFileActionPerformed
+        if (lzfCompressResult == null) {
+            JOptionPane.showMessageDialog(this, "É necessario que já exista alguma string compressa!");
+            return;
+        }
+
+        int result = fc.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+
+            File selectedFile = fc.getSelectedFile();
+            filename = selectedFile.getAbsolutePath();
+
+            try {
+                File resultFile = new File(filename + SUFFIX);
+                FileOutputStream out = new FileOutputStream(resultFile);
+                out.write(LZFEncoder.encode(lzfCompressResult));
+                out.close();
+                System.out.println("Wrote in file '" + resultFile.getAbsolutePath() + "'.");
+                JOptionPane.showMessageDialog(this, "Ficheiro guardado com sucesso!");
+
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSaveFileActionPerformed
+
+    private void btnOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenFileActionPerformed
+        int result = fc.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            this.openedFile = true;
+            File selectedFile = fc.getSelectedFile();
+
+            filename = selectedFile.getAbsolutePath();
+
+            try {
+                FileReader reader = new FileReader(filename);
+                if (filename.contains(SUFFIX)) {
+                    BufferedReader br = new BufferedReader(reader);
+                    taInput.read(br, null);
+                    br.close();
+                    System.out.println(taInput.getText());
+                    this.fileCompressed = true;
+                    JOptionPane.showMessageDialog(this, "Ficheiro comprimido carregado com sucesso!");
+                } else {
+                    BufferedReader br = new BufferedReader(reader);
+                    taInput.read(br, null);
+                    br.close();
+                    System.out.println(taInput.getText());
+                    JOptionPane.showMessageDialog(this, "Ficheiro descomprimido carregado com sucesso!");
+                }
+
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnOpenFileActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        this.openedFile = false;
+        this.taInput.setText("");
+        this.taOutput.setText("");
+        this.lzfCompressResult = null;
+        this.lzfDecompressResult = null;
+        this.fileCompressed = false;
+        this.lblInpSize.setText("Size: 0");
+        this.lblOutSize.setText("Size: 0");
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -291,21 +451,26 @@ public class LZFGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCompress;
     private javax.swing.JButton btnDecompress;
-    private javax.swing.JButton btnNext;
     private javax.swing.JButton btnOpenFile;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSaveFile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel lblInpSize;
+    private javax.swing.JLabel lblOutSize;
+    private javax.swing.JRadioButton radioShowBinary;
     private javax.swing.JTextArea taInput;
     private javax.swing.JTextArea taOutput;
     // End of variables declaration//GEN-END:variables
 
     private void initCustomComponents() {
-        this.btnNext.setEnabled(false);
         this.taOutput.setEnabled(false);
-        this.taInput.setEnabled(false);
+        this.radioShowBinary.setSelected(false);
     }
 
     private byte[] readData(File in) throws IOException {
@@ -330,7 +495,5 @@ public class LZFGUI extends javax.swing.JFrame {
         }
         return result;
     }
-    
-    
 
 }

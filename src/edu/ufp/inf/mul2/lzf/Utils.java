@@ -23,14 +23,20 @@ public class Utils {
         String s = new String(bytes); // possibly with a charset
         char[] chars = s.toCharArray();
         StringBuilder sb = new StringBuilder();
-        return sb.append("[").append(chars).append("]").toString();
+        return sb.append(chars).toString();
     }
     
     public static String formatOctetBinary(String binary)
     {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < binary.length(); i = i + 8) {
-            sb.append(binary.substring(i, i+8)).append('\n');
+            String octet = binary.substring(i, i+8);
+            int j = Integer.parseInt(octet, 2);
+            if(j < 65) {
+                j+=48;
+            }
+            System.out.println(j);
+            sb.append(octet).append(" - ").append((char)j).append('\n');
         }
         
         return sb.toString();
