@@ -1,5 +1,7 @@
 package edu.ufp.inf.mul2.lzf;
 
+import java.awt.Font;
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,7 +10,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,11 +29,11 @@ import javax.swing.JOptionPane;
  * @author André Nogueira <andreedsnogueira@gmail.com>
  * @author Filipe Teixeira <lipe_teixeira_ft@hotmail.com>
  * @author Hugo Ramalho <hugo_ramalho9@gmail.com>
- * 
+ *
  * @version 1.0
  */
 public class LZFGUI extends javax.swing.JFrame {
-    
+
     private final static String SUFFIX = ".lzf";
     private final JFileChooser fc = new JFileChooser();
     private boolean openedFile = false;
@@ -70,6 +74,7 @@ public class LZFGUI extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         radioShowBinary = new javax.swing.JRadioButton();
+        btnAbout = new javax.swing.JButton();
         lblOutSize = new javax.swing.JLabel();
         lblInpSize = new javax.swing.JLabel();
 
@@ -134,6 +139,13 @@ public class LZFGUI extends javax.swing.JFrame {
             }
         });
 
+        btnAbout.setText("About");
+        btnAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAboutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -148,13 +160,15 @@ public class LZFGUI extends javax.swing.JFrame {
                     .addComponent(btnSaveFile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                     .addComponent(btnDecompress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(radioShowBinary, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(btnReset)))
+                        .addComponent(radioShowBinary, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAbout, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,9 +187,10 @@ public class LZFGUI extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioShowBinary)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnReset)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAbout))
         );
 
         lblOutSize.setText("Size: 0");
@@ -198,7 +213,7 @@ public class LZFGUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 403, Short.MAX_VALUE)
                                 .addComponent(lblInpSize))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -211,7 +226,7 @@ public class LZFGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(9, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -236,10 +251,10 @@ public class LZFGUI extends javax.swing.JFrame {
 
     private void btnDecompressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecompressActionPerformed
         if (!this.fileCompressed) {
-            JOptionPane.showMessageDialog(this, "You need to open a compressed file");
+            JOptionPane.showMessageDialog(this, "You need to open a compressed file.");
             return;
         }
-        
+
         if (this.taInput.getText().length() > 0 || this.openedFile == true) {
             String output = null;
             byte[] data = null;
@@ -250,7 +265,7 @@ public class LZFGUI extends javax.swing.JFrame {
                         System.err.println("File '" + filename + "' does not exist.");
                         System.exit(1);
                     }
-                    
+
                     data = readData(src);
                     this.lblInpSize.setText("Size: " + data.length);
                     System.out.println("Read " + data.length + " bytes.");
@@ -262,24 +277,24 @@ public class LZFGUI extends javax.swing.JFrame {
                     } else {
                         output = Utils.bytesToString(lzfDecompressResult);
                     }
-                    
+
                     System.out.println(output);
-                    
+
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             } else {
-                
+
                 try {
                     data = taInput.getText().getBytes();
                     this.lblInpSize.setText("Size: " + data.length);
                     System.out.println("Read " + data.length + " bytes.");
                     lzfDecompressResult = LZFDecoder.decode(data);
                     System.out.println("Processed into " + lzfDecompressResult.length + " bytes.");
-                    
+
                     if (this.radioShowBinary.isSelected()) {
                         output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfDecompressResult));
-                        
+
                     } else {
                         output = Utils.bytesToString(lzfDecompressResult);
                     }
@@ -287,12 +302,12 @@ public class LZFGUI extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(LZFGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             }
-            
+
             this.lblOutSize.setText("Size: " + lzfDecompressResult.length);
             taOutput.setText(output);
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "You haven't opened a file yet or you haven't wrote a input string.");
         }
@@ -300,7 +315,7 @@ public class LZFGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDecompressActionPerformed
 
     private void btnCompressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompressActionPerformed
-        
+
         if (this.taInput.getText().length() > 0 || this.openedFile == true) //|| this.openedFile == false
         {
             String output = null;
@@ -312,7 +327,7 @@ public class LZFGUI extends javax.swing.JFrame {
                         System.err.println("File '" + filename + "' does not exist.");
                         System.exit(1);
                     }
-                    
+
                     data = readData(src);
                     this.lblInpSize.setText("Size: " + data.length);
                     System.out.println("Read " + data.length + " bytes.");
@@ -325,31 +340,31 @@ public class LZFGUI extends javax.swing.JFrame {
                         output = Utils.bytesToString(lzfCompressResult);
                     }
                     System.out.println(output);
-                    
+
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             } else {
-                
+
                 data = taInput.getText().getBytes();
                 this.lblInpSize.setText("Size: " + data.length);
                 System.out.println("Read " + data.length + " bytes.");
                 lzfCompressResult = LZFEncoder.encode(data);
                 System.out.println("Processed into " + lzfCompressResult.length + " bytes.");
-                
+
                 if (this.radioShowBinary.isSelected()) {
                     output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfCompressResult));
                 } else {
                     output = Utils.bytesToString(lzfCompressResult);
                 }
-                
+
                 System.out.println(output);
-                
+
             }
-            
+
             this.lblOutSize.setText("Size: " + lzfCompressResult.length);
             taOutput.setText(output);
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "You haven't opened a file yet or you haven't wrote a input string.");
         }
@@ -359,25 +374,25 @@ public class LZFGUI extends javax.swing.JFrame {
         File selectedFile = fc.getSelectedFile();
         filename = selectedFile.getAbsolutePath();
         System.out.println(filename);
-        
+
         if (this.fileCompressed) {
             fc.setSelectedFile(new File(filename.replace(SUFFIX, "")));
         }
-        
+
         int result = fc.showSaveDialog(this);
-        
+
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = fc.getSelectedFile();
             filename = selectedFile.getAbsolutePath();
-            
+
             try {
                 if (this.fileCompressed) {
-                    
+
                     if (lzfDecompressResult == null) {
                         JOptionPane.showMessageDialog(this, "You need to make a decompression first!");
                         return;
                     }
-                    
+
                     File resultFile = new File(filename);
                     FileOutputStream out = new FileOutputStream(resultFile);
                     System.out.println("Here2: " + Utils.bytesToString(lzfDecompressResult));
@@ -390,7 +405,7 @@ public class LZFGUI extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "You need to make a compression first!");
                         return;
                     }
-                    
+
                     File resultFile = new File(filename + SUFFIX);
                     FileOutputStream out = new FileOutputStream(resultFile);
                     System.out.println("Here1: " + Utils.bytesToString(lzfCompressResult));
@@ -399,7 +414,7 @@ public class LZFGUI extends javax.swing.JFrame {
                     System.out.println("Wrote in file '" + resultFile.getAbsolutePath() + "'.");
                     JOptionPane.showMessageDialog(this, "Decompressed file save with success!");
                 }
-                
+
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -411,9 +426,9 @@ public class LZFGUI extends javax.swing.JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             this.openedFile = true;
             File selectedFile = fc.getSelectedFile();
-            
+
             filename = selectedFile.getAbsolutePath();
-            
+
             try {
                 FileReader reader = new FileReader(filename);
                 if (filename.contains(SUFFIX)) {
@@ -431,11 +446,11 @@ public class LZFGUI extends javax.swing.JFrame {
                     this.fileCompressed = false;
                     JOptionPane.showMessageDialog(this, "Decompressed file loaded with success!");
                 }
-                
+
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            
+
             this.taOutput.setText("");
         }
     }//GEN-LAST:event_btnOpenFileActionPerformed
@@ -454,6 +469,30 @@ public class LZFGUI extends javax.swing.JFrame {
     private void radioShowBinaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioShowBinaryActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_radioShowBinaryActionPerformed
+
+    private void btnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAboutActionPerformed
+       
+        String message
+                = "<html>LZF GUI created for Multimedia II.<br><br>"
+                + "<b>Coordinator:</b><br>"
+                + "Nuno Magalhães Ribeiro (nribeiro@ufp.pt)<br><br>"
+                + "<b>Authors:</b><br>"
+                + "Tiago Cardoso (tiagocardosoweb@gmail.com)<br>"
+                + "André Nogueira (andreedsnogueira@gmail.com)<br>"
+                + "Filipe Teixeira (lipe_teixeira_ft@hotmail.com)<br>"
+                + "Hugo Ramalho (hugo_ramalho9@gmail.com)</html>";
+
+        JLabel label = new JLabel(message);
+        label.setFont(new Font("arial", Font.PLAIN, 14));
+        
+        ImageIcon imageIcon = new ImageIcon("./res/UFP.jpg"); // load the image to a imageIcon
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(60, 80, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        imageIcon = new ImageIcon(newimg);  // transform it back
+
+        JOptionPane.showMessageDialog(this, label, "About", JOptionPane.INFORMATION_MESSAGE, imageIcon);
+
+    }//GEN-LAST:event_btnAboutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -491,6 +530,7 @@ public class LZFGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbout;
     private javax.swing.JButton btnCompress;
     private javax.swing.JButton btnDecompress;
     private javax.swing.JButton btnOpenFile;
@@ -514,13 +554,13 @@ public class LZFGUI extends javax.swing.JFrame {
         this.taOutput.setEnabled(false);
         this.radioShowBinary.setSelected(false);
     }
-    
+
     /**
      * Reads bytes from a given File
-     * 
+     *
      * @param in
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     private byte[] readData(File in) throws IOException {
         int len = (int) in.length();
@@ -528,7 +568,7 @@ public class LZFGUI extends javax.swing.JFrame {
         byte[] result = new byte[len];
         int offset = 0;
         FileInputStream fis = new FileInputStream(in);
-        
+
         while (len > 0) {
             int count = fis.read(result, offset, len);
             if (count < 0) {
@@ -544,5 +584,5 @@ public class LZFGUI extends javax.swing.JFrame {
         }
         return result;
     }
-    
+
 }
