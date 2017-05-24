@@ -1,10 +1,5 @@
 package edu.ufp.inf.mul2.lzf;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,11 +12,24 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
+ * <p>
+ * Title: Multimedia II - LZF</p>
+ * <p>
+ * Description: LZF Compression / Decompression GUI</p>
+ * <p>
+ * Copyright: Copyright (c) 2017</p>
+ * <p>
+ * Company: UFP </p>
  *
- * @author tiagocardoso
+ * @author Tiago Cardoso <tiagocardosoweb@gmail.com>
+ * @author André Nogueira <andreedsnogueira@gmail.com>
+ * @author Filipe Teixeira <lipe_teixeira_ft@hotmail.com>
+ * @author Hugo Ramalho <hugo_ramalho9@gmail.com>
+ * 
+ * @version 1.0
  */
 public class LZFGUI extends javax.swing.JFrame {
-
+    
     private final static String SUFFIX = ".lzf";
     private final JFileChooser fc = new JFileChooser();
     private boolean openedFile = false;
@@ -83,7 +91,7 @@ public class LZFGUI extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
-        btnOpenFile.setText("Abrir Compressão");
+        btnOpenFile.setText("Open");
         btnOpenFile.setToolTipText("");
         btnOpenFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,21 +99,21 @@ public class LZFGUI extends javax.swing.JFrame {
             }
         });
 
-        btnSaveFile.setText("Guardar Compressão");
+        btnSaveFile.setText("Save");
         btnSaveFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveFileActionPerformed(evt);
             }
         });
 
-        btnCompress.setText("Comprimir");
+        btnCompress.setText("Compress");
         btnCompress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCompressActionPerformed(evt);
             }
         });
 
-        btnDecompress.setText("Descomprimir");
+        btnDecompress.setText("Decompress");
         btnDecompress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDecompressActionPerformed(evt);
@@ -119,7 +127,12 @@ public class LZFGUI extends javax.swing.JFrame {
             }
         });
 
-        radioShowBinary.setText("Mostrar Binario");
+        radioShowBinary.setText("Show Binary");
+        radioShowBinary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioShowBinaryActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -222,13 +235,12 @@ public class LZFGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDecompressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecompressActionPerformed
-        if(!this.fileCompressed) {
-            JOptionPane.showMessageDialog(this, "É necessario carregar um ficheiro comprimido.");
+        if (!this.fileCompressed) {
+            JOptionPane.showMessageDialog(this, "You need to open a compressed file");
             return;
         }
         
-        if (this.taInput.getText().length() > 0 || this.openedFile == true)
-        {
+        if (this.taInput.getText().length() > 0 || this.openedFile == true) {
             String output = null;
             byte[] data = null;
             if (this.openedFile == true) {
@@ -238,14 +250,13 @@ public class LZFGUI extends javax.swing.JFrame {
                         System.err.println("File '" + filename + "' does not exist.");
                         System.exit(1);
                     }
-
+                    
                     data = readData(src);
                     this.lblInpSize.setText("Size: " + data.length);
                     System.out.println("Read " + data.length + " bytes.");
                     lzfDecompressResult = LZFDecoder.decode(data);
                     System.out.println("Processed into " + lzfDecompressResult.length + " bytes.");
 
-                    // em lzfResult fica o resultado descomprimido
                     if (this.radioShowBinary.isSelected()) {
                         output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfDecompressResult));
                     } else {
@@ -253,19 +264,19 @@ public class LZFGUI extends javax.swing.JFrame {
                     }
                     
                     System.out.println(output);
-
+                    
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             } else {
-
+                
                 try {
                     data = taInput.getText().getBytes();
                     this.lblInpSize.setText("Size: " + data.length);
                     System.out.println("Read " + data.length + " bytes.");
                     lzfDecompressResult = LZFDecoder.decode(data);
                     System.out.println("Processed into " + lzfDecompressResult.length + " bytes.");
-
+                    
                     if (this.radioShowBinary.isSelected()) {
                         output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfDecompressResult));
                         
@@ -276,20 +287,20 @@ public class LZFGUI extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(LZFGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                
             }
-
-            this.lblOutSize.setText("Size: " + output.length());
+            
+            this.lblOutSize.setText("Size: " + lzfDecompressResult.length);
             taOutput.setText(output);
-
+            
         } else {
-            JOptionPane.showMessageDialog(this, "Ainda não abriu um ficheiro ou não escreveu nenhuma string de input");
+            JOptionPane.showMessageDialog(this, "You haven't opened a file yet or you haven't wrote a input string.");
         }
 
     }//GEN-LAST:event_btnDecompressActionPerformed
 
     private void btnCompressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompressActionPerformed
-
+        
         if (this.taInput.getText().length() > 0 || this.openedFile == true) //|| this.openedFile == false
         {
             String output = null;
@@ -301,70 +312,94 @@ public class LZFGUI extends javax.swing.JFrame {
                         System.err.println("File '" + filename + "' does not exist.");
                         System.exit(1);
                     }
-
+                    
                     data = readData(src);
                     this.lblInpSize.setText("Size: " + data.length);
                     System.out.println("Read " + data.length + " bytes.");
                     lzfCompressResult = LZFEncoder.encode(data);
                     System.out.println("Processed into " + lzfCompressResult.length + " bytes.");
 
-                    // em lzfResult fica o resultado comprimido
                     if (this.radioShowBinary.isSelected()) {
                         output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfCompressResult));
                     } else {
                         output = Utils.bytesToString(lzfCompressResult);
                     }
                     System.out.println(output);
-
+                    
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             } else {
-
+                
                 data = taInput.getText().getBytes();
                 this.lblInpSize.setText("Size: " + data.length);
                 System.out.println("Read " + data.length + " bytes.");
                 lzfCompressResult = LZFEncoder.encode(data);
                 System.out.println("Processed into " + lzfCompressResult.length + " bytes.");
-
+                
                 if (this.radioShowBinary.isSelected()) {
                     output = Utils.formatOctetBinary(Utils.bytesToBinaryString(lzfCompressResult));
                 } else {
                     output = Utils.bytesToString(lzfCompressResult);
                 }
-
+                
                 System.out.println(output);
-
+                
             }
             
-            this.lblOutSize.setText("Size: " + output.length());
+            this.lblOutSize.setText("Size: " + lzfCompressResult.length);
             taOutput.setText(output);
-
+            
         } else {
-            JOptionPane.showMessageDialog(this, "Ainda não abriu um ficheiro ou não escreveu nenhuma string de input");
+            JOptionPane.showMessageDialog(this, "You haven't opened a file yet or you haven't wrote a input string.");
         }
     }//GEN-LAST:event_btnCompressActionPerformed
 
     private void btnSaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveFileActionPerformed
-        if (lzfCompressResult == null) {
-            JOptionPane.showMessageDialog(this, "É necessario que já exista alguma string compressa!");
-            return;
+        File selectedFile = fc.getSelectedFile();
+        filename = selectedFile.getAbsolutePath();
+        System.out.println(filename);
+        
+        if (this.fileCompressed) {
+            fc.setSelectedFile(new File(filename.replace(SUFFIX, "")));
         }
-
+        
         int result = fc.showSaveDialog(this);
+        
         if (result == JFileChooser.APPROVE_OPTION) {
-
-            File selectedFile = fc.getSelectedFile();
+            selectedFile = fc.getSelectedFile();
             filename = selectedFile.getAbsolutePath();
-
+            
             try {
-                File resultFile = new File(filename + SUFFIX);
-                FileOutputStream out = new FileOutputStream(resultFile);
-                out.write(LZFEncoder.encode(lzfCompressResult));
-                out.close();
-                System.out.println("Wrote in file '" + resultFile.getAbsolutePath() + "'.");
-                JOptionPane.showMessageDialog(this, "Ficheiro guardado com sucesso!");
-
+                if (this.fileCompressed) {
+                    
+                    if (lzfDecompressResult == null) {
+                        JOptionPane.showMessageDialog(this, "You need to make a decompression first!");
+                        return;
+                    }
+                    
+                    File resultFile = new File(filename);
+                    FileOutputStream out = new FileOutputStream(resultFile);
+                    System.out.println("Here2: " + Utils.bytesToString(lzfDecompressResult));
+                    out.write(lzfDecompressResult);
+                    out.close();
+                    System.out.println("Wrote in file '" + resultFile.getAbsolutePath() + "'.");
+                    JOptionPane.showMessageDialog(this, "Compressed file save with success!");
+                } else {
+                    if (lzfCompressResult == null) {
+                        JOptionPane.showMessageDialog(this, "You need to make a compression first!");
+                        return;
+                    }
+                    
+                    File resultFile = new File(filename + SUFFIX);
+                    FileOutputStream out = new FileOutputStream(resultFile);
+                    System.out.println("Here1: " + Utils.bytesToString(lzfCompressResult));
+                    out.write(lzfCompressResult);
+                    out.close();
+                    System.out.println("Wrote in file '" + resultFile.getAbsolutePath() + "'.");
+                    JOptionPane.showMessageDialog(this, "Decompressed file save with success!");
+                }
+                
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -376,29 +411,32 @@ public class LZFGUI extends javax.swing.JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             this.openedFile = true;
             File selectedFile = fc.getSelectedFile();
-
+            
             filename = selectedFile.getAbsolutePath();
-
+            
             try {
                 FileReader reader = new FileReader(filename);
                 if (filename.contains(SUFFIX)) {
                     BufferedReader br = new BufferedReader(reader);
-                    taInput.read(br, null);
+                    this.taInput.read(br, null);
                     br.close();
                     System.out.println(taInput.getText());
                     this.fileCompressed = true;
-                    JOptionPane.showMessageDialog(this, "Ficheiro comprimido carregado com sucesso!");
+                    JOptionPane.showMessageDialog(this, "Compressed file loaded with success!");
                 } else {
                     BufferedReader br = new BufferedReader(reader);
-                    taInput.read(br, null);
+                    this.taInput.read(br, null);
                     br.close();
                     System.out.println(taInput.getText());
-                    JOptionPane.showMessageDialog(this, "Ficheiro descomprimido carregado com sucesso!");
+                    this.fileCompressed = false;
+                    JOptionPane.showMessageDialog(this, "Decompressed file loaded with success!");
                 }
-
+                
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
+            
+            this.taOutput.setText("");
         }
     }//GEN-LAST:event_btnOpenFileActionPerformed
 
@@ -412,6 +450,10 @@ public class LZFGUI extends javax.swing.JFrame {
         this.lblInpSize.setText("Size: 0");
         this.lblOutSize.setText("Size: 0");
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void radioShowBinaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioShowBinaryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioShowBinaryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -472,14 +514,21 @@ public class LZFGUI extends javax.swing.JFrame {
         this.taOutput.setEnabled(false);
         this.radioShowBinary.setSelected(false);
     }
-
+    
+    /**
+     * Reads bytes from a given File
+     * 
+     * @param in
+     * @return
+     * @throws IOException 
+     */
     private byte[] readData(File in) throws IOException {
         int len = (int) in.length();
         System.out.println("readDates in.length = " + len);
         byte[] result = new byte[len];
         int offset = 0;
         FileInputStream fis = new FileInputStream(in);
-
+        
         while (len > 0) {
             int count = fis.read(result, offset, len);
             if (count < 0) {
@@ -495,5 +544,5 @@ public class LZFGUI extends javax.swing.JFrame {
         }
         return result;
     }
-
+    
 }

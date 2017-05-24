@@ -1,15 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.ufp.inf.mul2.lzf;
 
 /**
+ * <p>
+ * Title: Multimedia II - LZF</p>
+ * <p>
+ * Description: LZF Compression / Decompression GUI</p>
+ * <p>
+ * Copyright: Copyright (c) 2017</p>
+ * <p>
+ * Company: UFP </p>
  *
- * @author tiagocardoso
+ * @author Tiago Cardoso <tiagocardosoweb@gmail.com>
+ * @author André Nogueira <andreedsnogueira@gmail.com>
+ * @author Filipe Teixeira <lipe_teixeira_ft@hotmail.com>
+ * @author Hugo Ramalho <hugo_ramalho9@gmail.com>
+ * 
+ * @version 1.0
  */
 public class Utils {
+    
+    /**
+     * Converts bytes[] into a Binary represented String
+     * 
+     * @param bytes
+     * @return 
+     */
     public static String bytesToBinaryString( byte[] bytes )
     {
         StringBuilder sb = new StringBuilder(bytes.length * Byte.SIZE);
@@ -18,6 +33,12 @@ public class Utils {
         return sb.toString();
     }
     
+    /**
+     * Converts bytes[] into a String
+     * 
+     * @param bytes
+     * @return 
+     */
     public static String bytesToString(byte[] bytes)
     {
         String s = new String(bytes); // possibly with a charset
@@ -26,6 +47,12 @@ public class Utils {
         return sb.append(chars).toString();
     }
     
+    /**
+     * Format Binary represented String into Octects
+     * 
+     * @param binary
+     * @return 
+     */
     public static String formatOctetBinary(String binary)
     {
         StringBuilder sb = new StringBuilder();

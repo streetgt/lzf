@@ -192,7 +192,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnOpenFile">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Abrir Compress&#xe3;o"/>
+            <Property name="text" type="java.lang.String" value="Open"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
@@ -201,7 +201,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnSaveFile">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Guardar Compress&#xe3;o"/>
+            <Property name="text" type="java.lang.String" value="Save"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveFileActionPerformed"/>
@@ -209,7 +209,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCompress">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Comprimir"/>
+            <Property name="text" type="java.lang.String" value="Compress"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCompressActionPerformed"/>
@@ -217,7 +217,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnDecompress">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Descomprimir"/>
+            <Property name="text" type="java.lang.String" value="Decompress"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDecompressActionPerformed"/>
@@ -237,8 +237,11 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="radioShowBinary">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Mostrar Binario"/>
+            <Property name="text" type="java.lang.String" value="Show Binary"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioShowBinaryActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
