@@ -1,6 +1,6 @@
 # LZF
 
-LZF GUI was made for Multimedia II class at University Fernando Pessoa in Oporto, Portugal.
+LZF GUI was made for [Multimedia II](http://multimedia.ufp.pt) class at University Fernando Pessoa in Oporto, Portugal.
 
  - **Authors**
 	- Tiago Cardoso (<tiagocardosoweb@gmail.com>).
