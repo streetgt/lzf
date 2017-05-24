@@ -1,6 +1,7 @@
 package edu.ufp.inf.mul2.lzf;
 
-import java.awt.Font;
+import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,12 +9,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.event.HyperlinkEvent;
 
 /**
  * <p>
@@ -133,11 +137,6 @@ public class LZFGUI extends javax.swing.JFrame {
         });
 
         radioShowBinary.setText("Show Binary");
-        radioShowBinary.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioShowBinaryActionPerformed(evt);
-            }
-        });
 
         btnAbout.setText("About");
         btnAbout.addActionListener(new java.awt.event.ActionListener() {
@@ -466,31 +465,46 @@ public class LZFGUI extends javax.swing.JFrame {
         this.lblOutSize.setText("Size: 0");
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void radioShowBinaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioShowBinaryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioShowBinaryActionPerformed
-
     private void btnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAboutActionPerformed
        
-        String message
-                = "<html>LZF GUI created for Multimedia II.<br><br>"
-                + "<b>Coordinator:</b><br>"
-                + "Nuno Magalhães Ribeiro (nribeiro@ufp.pt)<br><br>"
-                + "<b>Authors:</b><br>"
-                + "Tiago Cardoso (tiagocardosoweb@gmail.com)<br>"
-                + "André Nogueira (andreedsnogueira@gmail.com)<br>"
-                + "Filipe Teixeira (lipe_teixeira_ft@hotmail.com)<br>"
-                + "Hugo Ramalho (hugo_ramalho9@gmail.com)</html>";
-
-        JLabel label = new JLabel(message);
-        label.setFont(new Font("arial", Font.PLAIN, 14));
-        
         ImageIcon imageIcon = new ImageIcon("./res/UFP.jpg"); // load the image to a imageIcon
         Image image = imageIcon.getImage(); // transform it 
         Image newimg = image.getScaledInstance(60, 80, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         imageIcon = new ImageIcon(newimg);  // transform it back
+        
+        String message
+                = "<html>LZF GUI created for Multimedia II.<br><br>"
+                + "<b>Coordinator:</b><br>"
+                + "Nuno Magalhães Ribeiro (<a href='mailto:nribeiro@ufp.pt'>nribeiro@ufp.pt</a>).<br><br>"
+                + "<b>Authors:</b><br>"
+                + "Tiago Cardoso (<a href='mailto:tiagocardosoweb@gmail.com'>tiagocardosoweb@gmail.com</a>).<br>"
+                + "André Nogueira (<a href='mailto:andreedsnogueira@gmail.com'>andreedsnogueira@gmail.com</a>).<br>"
+                + "Filipe Teixeira (<a href='mailto:lipe_teixeira_ft@hotmail.com'>lipe_teixeira_ft@hotmail.com</a>).<br>"
+                + "Hugo Ramalho (<a href='mailto:hugo_ramalho9@gmail.com'>hugo_ramalho9@gmail.com</a>).<br><br>"
+                + "Thanks to <a href='https://github.com/nruth/controldemort/tree/master/voldemort-0.90.1-nruth/src/java/voldemort/store/compress/lzf'>Nicholas Rutherford</a> for provide the LZF standart implementation in Java.</html>";
+        
+        // html content
+        JEditorPane ep = new JEditorPane("text/html", message);
 
-        JOptionPane.showMessageDialog(this, label, "About", JOptionPane.INFORMATION_MESSAGE, imageIcon);
+        // handle link events
+        ep.addHyperlinkListener((HyperlinkEvent e) -> {
+            if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+                Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                    try {
+                        desktop.browse(new URI(e.getURL().toString()));
+                    } catch (IOException | URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        ep.setEditable(false);
+        ep.setHighlighter(null);
+        ep.setBackground(new Color(255, 255,255, 0));
+        ep.setBorder(null);
+        
+        JOptionPane.showMessageDialog(this, ep, "About", JOptionPane.PLAIN_MESSAGE, imageIcon);
 
     }//GEN-LAST:event_btnAboutActionPerformed
 
